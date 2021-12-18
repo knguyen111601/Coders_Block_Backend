@@ -1,27 +1,28 @@
+module Api
+  module V1
 class BlogsController < ApplicationController
+  
   before_action :set_blog, only: %i[ show update destroy ]
   before_action :authorized
 
   # GET /blogs
   def index
-    @blogs = Blog.all
+    blogs = Blog.all
 
-    render json: @blogs
+    render json: BlogSerializer.new(blogs, options).serialized_json
   end
 
   # GET /blogs/1
   def show
-    @blog = Blog.find(params[:id])
-    render json: @blog
+    blog = Blog.find(params[:id])
+    render json: BlogSerializer.new(blog, options).serialized_json
   end
 
   # POST /blogs
   def create
-    @blog = Blog.new(blog_params)
-    @blog.user = @user.id
-
-    if @blog.save
-      render json: @blog, status: :created, location: @blog
+    blog = Blog.new(blog_params)
+    if blog.save
+      render json: BlogSerializer.new(blog).serialized_json
     else
       render json: @blog.errors, status: :unprocessable_entity
     end
@@ -29,9 +30,11 @@ class BlogsController < ApplicationController
 
   # PATCH/PUT /blogs/1
   def update
-    if @blog.update(blog_params)
-      @blog.user = @user.id
-      render json: @blog
+
+    blog = Blog.find(params[:id])
+
+    if blog.update(blog_params)
+      render json: BlogSerializer.new(blog, options).serialized_json
     else
       render json: @blog.errors, status: :unprocessable_entity
     end
@@ -39,8 +42,9 @@ class BlogsController < ApplicationController
 
   # DELETE /blogs/1
   def destroy
-    @blog.destroy
-    if @blog.destroy
+    blog = Blog.find(params[:id])
+
+    if blog.destroy
       head :no_content, status: :ok
     else
       render json: @list.errors, status: :unprocessable_entity
@@ -57,4 +61,9 @@ class BlogsController < ApplicationController
     def blog_params
       params.require(:blog).permit(:title, :user_id)
     end
+    def options
+      @options ||= { include: %i[paragraphs images] }
+    end
+end
+end
 end

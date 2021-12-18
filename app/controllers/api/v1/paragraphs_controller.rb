@@ -1,25 +1,28 @@
+module Api
+  module V1
 class ParagraphsController < ApplicationController
+
   before_action :set_paragraph, only: %i[ show update destroy ]
 
   # GET /paragraphs
   def index
-    @paragraphs = Paragraph.all
+    paragraphs = Paragraph.all
 
-    render json: @paragraphs
+    render json: ParagraphsSerializer.new(paragraphs).serialized_json
   end
 
   # GET /paragraphs/1
   def show
-    @paragraph = Paragraph.find(params[:id])
-    render json: @paragraph
+    paragraph = Paragraph.find(params[:id])
+    render json: ParagraphsSerializer.new(paragraph).serialized_json
   end
 
   # POST /paragraphs
   def create
-    @paragraph = Paragraph.new(paragraph_params)
-    @paragraph.blog = @blog.id
-    if @paragraph.save
-      render json: @paragraph, status: :created, location: @paragraph
+    paragraph = Paragraph.new(paragraph_params)
+
+    if paragraph.save
+      render json: ParagraphsSerializer.new(paragraph).serialized_json
     else
       render json: @paragraph.errors, status: :unprocessable_entity
     end
@@ -27,9 +30,11 @@ class ParagraphsController < ApplicationController
 
   # PATCH/PUT /paragraphs/1
   def update
-    if @paragraph.update(paragraph_params)
-      @paragraph.blog = @blog.id
-      render json: @paragraph
+
+    paragraph = Paragraph.find(params[:id])
+
+    if paragraph.update(paragraph_params)
+      render json: ParagraphsSerializer.new(paragraph).serialized_json
     else
       render json: @paragraph.errors, status: :unprocessable_entity
     end
@@ -37,8 +42,10 @@ class ParagraphsController < ApplicationController
 
   # DELETE /paragraphs/1
   def destroy
-    @paragraph.destroy
-    if @paragraph.destroy
+    
+    paragraph = Paragraph.find(params[:id])
+
+    if paragraph.destroy
       head :no_content, status: :ok
     else
       render json: @list.errors, status: :unprocessable_entity
@@ -53,6 +60,8 @@ class ParagraphsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def paragraph_params
-      params.require(:paragraph).permit(:heading, :content, :subtext. :blog_id)
+      params.require(:paragraph).permit(:heading, :content, :subtext, :order, :blog_id)
     end
+end
+end
 end
