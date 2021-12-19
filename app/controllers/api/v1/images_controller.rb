@@ -31,7 +31,7 @@ class ImagesController < ApplicationController
 
     image = Image.find(params[:id])
 
-    if @image.update(image_params)
+    if image.update(image_params)
       render json: ImagesSerializer.new(image).serialized_json
     else
       render json: @image.errors, status: :unprocessable_entity

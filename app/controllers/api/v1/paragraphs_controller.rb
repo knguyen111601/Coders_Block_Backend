@@ -2,19 +2,17 @@ module Api
   module V1
 class ParagraphsController < ApplicationController
 
-  before_action :set_paragraph, only: %i[ show update destroy ]
-
   # GET /paragraphs
   def index
     paragraphs = Paragraph.all
 
-    render json: ParagraphsSerializer.new(paragraphs).serialized_json
+    render json: ParagraphSerializer.new(paragraphs).serialized_json
   end
 
   # GET /paragraphs/1
   def show
     paragraph = Paragraph.find(params[:id])
-    render json: ParagraphsSerializer.new(paragraph).serialized_json
+    render json: ParagraphSerializer.new(paragraph).serialized_json
   end
 
   # POST /paragraphs
@@ -22,7 +20,7 @@ class ParagraphsController < ApplicationController
     paragraph = Paragraph.new(paragraph_params)
 
     if paragraph.save
-      render json: ParagraphsSerializer.new(paragraph).serialized_json
+      render json: ParagraphSerializer.new(paragraph).serialized_json
     else
       render json: @paragraph.errors, status: :unprocessable_entity
     end
@@ -34,7 +32,7 @@ class ParagraphsController < ApplicationController
     paragraph = Paragraph.find(params[:id])
 
     if paragraph.update(paragraph_params)
-      render json: ParagraphsSerializer.new(paragraph).serialized_json
+      render json: ParagraphSerializer.new(paragraph).serialized_json
     else
       render json: @paragraph.errors, status: :unprocessable_entity
     end
