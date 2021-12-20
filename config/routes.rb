@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   post "/login", to: "users#login"
   get "/auto_login", to: "users#auto_login"
   post "/signup" to: "users#create"
+  end 
 
   root 'pages#index'
   namespace :api do
