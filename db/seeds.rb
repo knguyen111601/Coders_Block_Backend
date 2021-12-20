@@ -6,15 +6,15 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-# User.destroy_all
-# Blog.destroy_all
-# Paragraph.destroy_all
-# Image.destroy_all
+User.destroy_all
+Blog.destroy_all
+Paragraph.destroy_all
+Image.destroy_all
 
 user = User.create(firstname: "Kenny", lastname: "Nguyen", username: "admin", password: "admin", pfp:"https://i.imgur.com/igF2kHr.png")
 
-blog = Blog.create(title: "Blog1", user: user)
-blog2 = Blog.create(title: "Blog2", user: user)
+blog = Blog.create(title: "Blog1", user: user, tags: ["html", "css", "javascript"])
+blog2 = Blog.create(title: "Blog2", user: user, tags:["python", "masonite"])
 
 
 Paragraph.create(heading: "Paragraph1 Head", content:"Hello World", subtext:"This is a paragraph", order: 1, blog:blog)
