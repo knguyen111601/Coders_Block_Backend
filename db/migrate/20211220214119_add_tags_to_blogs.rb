@@ -1,5 +1,5 @@
 class AddTagsToBlogs < ActiveRecord::Migration[7.0]
   def change
-    add_column :blogs, :tags, :string, array: true, default: []
+    change_column :blogs, :tags, :string, array: true, default: []
   end
 end
